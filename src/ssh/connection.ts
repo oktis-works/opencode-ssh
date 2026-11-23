@@ -130,8 +130,8 @@ export class SshConnection {
       connectConfig.hostVerifier = (key: Buffer): boolean => {
         const verdict = verifyHostKey(this._config.host, key, knownHostsPath, this._config.port)
         this._hostKeyVerdict = verdict
-        // A changed key is always rejected. An unknown key is only accepted
-        // in non-strict mode; here strict mode requires it to be present.
+        // Return false to signal verification failure; ssh2 may still emit "ready"
+        // Application should check _hostKeyVerdict after connect
         return verdict === "ok"
       }
     }
@@ -179,18 +179,25 @@ export class SshConnection {
     this.client = client
 
     return new Promise((resolve, reject) => {
+      let settled = false
+      const safeResolve = () => { if (!settled) { settled = true; resolve() } }
+      const safeReject = (err: Error) => { if (!settled) { settled = true; reject(err) } }
+
       client.on("ready", () => {
         this._connected = true
         this._connectedAt = new Date()
         this._lastActivity = new Date()
-        resolve()
+        safeResolve()
       })
       client.on("error", (err: Error) => {
         this._connected = false
-        reject(err)
+        safeReject(err)
       })
-      client.on("close", () => {
+      client.on("close", (hadError: boolean) => {
         this._connected = false
+        if (hadError && !settled) {
+          safeReject(new Error("Connection closed with error"))
+        }
       })
       client.on("end", () => {
         this._connected = false
