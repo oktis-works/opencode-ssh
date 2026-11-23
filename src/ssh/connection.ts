@@ -193,8 +193,9 @@ export class SshConnection {
         this._connected = false
         safeReject(err)
       })
-      client.on("close", (hadError: boolean) => {
+      client.on("close", (...args: unknown[]) => {
         this._connected = false
+        const hadError = args[0] === true
         if (hadError && !settled) {
           safeReject(new Error("Connection closed with error"))
         }
