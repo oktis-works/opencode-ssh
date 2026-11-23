@@ -1,6 +1,6 @@
 {
   "name": "@oktis-works/opencode-ssh",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "description": "SSH access plugin for OpenCode - secure remote command execution with command blocking",
   "type": "module",
   "main": "dist/index.js",
@@ -29,14 +29,14 @@
   "author": "Judah Aragao",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JudahAragao/opencode-ssh.git"
+    "url": "git+https://github.com/oktis-works/opencode-ssh.git"
   },
   "bugs": {
-    "url": "https://github.com/JudahAragao/opencode-ssh/issues"
+    "url": "https://github.com/oktis-works/opencode-ssh/issues"
   },
-  "homepage": "https://github.com/JudahAragao/opencode-ssh",
+  "homepage": "https://github.com/oktis-works/opencode-ssh",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "build": "node scripts/sync-version.cjs && tsc",
