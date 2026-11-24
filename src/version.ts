@@ -8,5 +8,5 @@
  */
 
 // BEGIN GENERATED: PLUGIN_VERSION (scripts/sync-version.cjs)
-export const PLUGIN_VERSION = "2.1.3"
+export const PLUGIN_VERSION = "2.1.4"
 // END GENERATED: PLUGIN_VERSION
